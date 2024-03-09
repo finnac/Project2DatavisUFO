@@ -36,7 +36,7 @@ class LeafletMap {
     vis.stAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
     //this is the base map layer, where we are showing the map background
-    vis.base_layer = L.tileLayer(vis.stUrl, {
+    vis.base_layer = L.tileLayer(vis.esriUrl, {
       id: 'esri-image',
       attribution: vis.esriAttr,
       ext: 'png'
