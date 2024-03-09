@@ -73,12 +73,19 @@ class LeafletMap {
                               .attr("fill", "red") //change the fill
                               .attr('r', 4); //change radius
 
+                              // Construct tooltip content
+                                const tooltipContent = `
+                                <div>City: ${d.city}</div>
+                                <div>Described encounter length: ${d.described_encounter_length}</div>
+                                <div>Description of encounter: ${d.description}</div>
+                               `;
+
                             //create a tool tip
                             d3.select('#tooltip')
                                 .style('opacity', 1)
                                 .style('z-index', 1000000)
                                   // Format number with million and thousand separator
-                                .html(`<div class="tooltip-label">City: ${d.city}, population ${d3.format(',')(d.population)}</div>`);
+                                .html(tooltipContent);
 
                           })
                         .on('mousemove', (event) => {

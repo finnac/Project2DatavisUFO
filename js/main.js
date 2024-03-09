@@ -9,6 +9,9 @@ d3.csv('data/ufoSample.csv')
       console.log(d);
       d.latitude = +d.latitude; //make sure these are not strings
       d.longitude = +d.longitude; //make sure these are not strings
+      d.city = d.city_area;
+      d.described_encounter_length = d.described_encounter_length;
+      d.description = d.description;
     });
 
     // Initialize chart and then show it
