@@ -18,3 +18,26 @@
   font-size: 10px;
   color: #888;
 }
+
+.column1 {
+  float: left;
+  width: 60vw;
+}
+
+.column2 {
+  float: left;
+  width: 37vw;
+}
+
+.columnInner {
+  float: left;
+  width: 50%;
+  height: 50vh;
+}
+
+#body {
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 2.5%;
+  font-size: large;
+}

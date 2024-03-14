@@ -1,13 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Interactive map with Leaflet</title>
-    <link rel="icon" href="data:;base64,iVBORwOKGO=" />
+    <title>Area 51</title>
+    <link rel="icon" href="images/ufo.png" />
+    <!--Note: Icon sourced from Freepik-->
     <link rel="stylesheet" href="css/leaflet.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="my-map"></div>
+    <h1 style="text-align: center;">WELCOME TO AREA 51</h1>
+    <p style="text-align: center;"><i>Developed by Ashley Finn, Shay Kleeh, and Mary Meineke</i></p>
+    <p id="body">
+        Welcome to Area 51! This web app allows you to view and interact with data about UFO sightings from around
+        the world. All data is originally from the <a href="">National UFO Reporting Center</a>, and the raw data file
+        we used can be found <a href="https://github.com/rfordatascience/tidytuesday/tree/2e9bd5a67e09b14d01f616b00f7f7e0931515d24/data/2019/2019-06-25">
+        here</a>.
+    </p>
+
+    <div class="row">
+        <div class="column1">
+            <div id="my-map"></div>
+            <div style="height: 25vh; background-color: chocolate;"> Timeline </div>
+        </div>
+        <div class="column2">
+            <div class="columnInner" style="background-color: chartreuse;">Map Key</div>
+            <div class="columnInner" style="background-color: cornflowerblue;">Detail on Demand</div>
+            <div style="background-color: lightblue;">B GOALS</div>
+        </div>
+    </div>
     
     <script src="js/d3.v6.min.js"></script>
     <script src="js/leaflet.js"></script>
@@ -17,7 +37,6 @@
     <script src="js/leafletMap.js"></script>
 
     <div id="tooltip"></div>
-
 
 </body>
 </html>
