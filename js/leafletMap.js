@@ -73,6 +73,9 @@ class LeafletMap {
                               .attr("fill", "red") //change the fill
                               .attr('r', 4); //change radius
 
+                              // Append content to the Detail on Demand column
+                              vis.addDetailOnDemandContent(d);
+
                               // Construct tooltip content
                                 const tooltipContent = `
                                 <div>City: ${d.city}</div>
@@ -95,6 +98,8 @@ class LeafletMap {
                               .style('top', (event.pageY + 10) + 'px');
                          })              
                         .on('mouseleave', function() { //function to add mouseover event
+                            vis.clearDetailOnDemandContent();
+
                             d3.select(this).transition() //D3 selects the object we have moused over in order to perform operations on it
                               .duration('150') //how long we are transitioning between the two states (works like keyframes)
                               .attr("fill", "steelblue") //change the fill
@@ -139,6 +144,23 @@ class LeafletMap {
       .attr("r", vis.radiusSize) ;
 
   }
+
+    // Function to add content to the Detail on Demand column
+    addDetailOnDemandContent(data) {
+      d3.select('.columnInner[style="background-color: cornflowerblue;"]')
+        .html(`
+          <div>City: ${data.city}</div>
+          <div>Described encounter length: ${data.described_encounter_length}</div>
+          <div>Description of encounter: ${data.description}</div>
+        `);
+    }
+  
+    // Function to clear content from the Detail on Demand column
+    clearDetailOnDemandContent() {
+      d3.select('.columnInner[style="background-color: cornflowerblue;"]')
+        .html('');
+    }
+  
 
 
   renderVis() {
