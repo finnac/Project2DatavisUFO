@@ -7,7 +7,9 @@ d3.csv('data/ufoSample.csv')
     console.log(data.length);
     data.forEach(d => {
       console.log(d);
-      d.date_time = d.date_time
+      d.datetime = d.date_time
+      //process datetime into javascript date object
+      d.dateobject = new Date(d.date_time);
       d.latitude = +d.latitude; //make sure these are not strings
       d.longitude = +d.longitude; //make sure these are not strings
       d.city = d.city_area;
@@ -16,6 +18,12 @@ d3.csv('data/ufoSample.csv')
       d.description = d.description;
       d.shape = d.ufo_shape;
       d.datedocumented = d.date_documented
+
+      let datestring = d.date_time
+
+
+
+
     });
 
     // Initialize chart and then show it
