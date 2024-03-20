@@ -19,8 +19,6 @@ d3.csv('data/ufoSample.csv')
       d.shape = d.ufo_shape;
       d.datedocumented = d.date_documented
 
-      let datestring = d.date_time
-
 
 
 
