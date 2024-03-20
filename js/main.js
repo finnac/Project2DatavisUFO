@@ -24,6 +24,19 @@ d3.csv('data/ufoSample.csv')
 
     });
 
+    //INITIAL MAP RENDERS
+
+    //NEED FUNCTION TO RENDER NEW MAPS WHEN SETTINGS CHANGE
+    //NEED TO ACCOUNT FOR SETTINGS 
+    //COLOR BY DROPDOWN: Options 1) year, 2) month, 3) time of day 
+    //time of day options
+    // morning: Morning: 4:01am - 10am
+    // Afternoon: 10:01am - 4pm 
+    // Evening: 4:01pm - 10pm
+    // night: 10:01pm - 4am
+    // (End values inclusive)
+
+
     // Initialize chart and then show it
     leafletMap = new LeafletMap({ parentElement: '#my-map'}, data);
 
