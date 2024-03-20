@@ -7,6 +7,7 @@ d3.csv('data/ufoSample.csv')
     console.log(data.length);
     data.forEach(d => {
       console.log(d);
+      d.date_time = d.date_time
       d.latitude = +d.latitude; //make sure these are not strings
       d.longitude = +d.longitude; //make sure these are not strings
       d.city = d.city_area;
