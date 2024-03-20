@@ -155,7 +155,9 @@ class LeafletMap {
     addDetailOnDemandContent(data) {
       d3.select('.columnInner[style="background-color: cornflowerblue;"]')
         .html(`
-          <div>City: ${data.city}</div>
+          <div><b>Country:</b> ${data.country}</div>
+          <div><b>City: </b>${data.city}</div>
+          <div><b>Date Documented:</b> ${data.date_documented}</div>
           <div><b>Described encounter length:</b> ${data.described_encounter_length}</div>
           <div><b>Description of encounter:</b> ${data.description}</div>
           <div><b>Shape:</b> ${data.shape}</div>
