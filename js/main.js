@@ -12,6 +12,7 @@ d3.csv('data/ufoSample.csv')
       d.city = d.city_area;
       d.described_encounter_length = d.described_encounter_length;
       d.description = d.description;
+      d.shape = d.ufo_shape;
     });
 
     // Initialize chart and then show it

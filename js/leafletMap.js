@@ -76,26 +76,30 @@ class LeafletMap {
                               // Append content to the Detail on Demand column
                               vis.addDetailOnDemandContent(d);
 
-                              // Construct tooltip content
-                                const tooltipContent = `
-                                <div>City: ${d.city}</div>
-                                <div>Described encounter length: ${d.described_encounter_length}</div>
-                                <div>Description of encounter: ${d.description}</div>
-                               `;
+                              //old tooltip code
+                              // // Construct tooltip content
+                              //   const tooltipContent = `
+                              //   <div>City: ${d.city}</div>
+                              //   <div>Described encounter length: ${d.described_encounter_length}</div>
+                              //   <div>Description of encounter: ${d.description}</div>   
+                              //  `;
 
+                              
+                            //old tooltip code
                             //create a tool tip
-                            d3.select('#tooltip')
-                                .style('opacity', 1)
-                                .style('z-index', 1000000)
-                                  // Format number with million and thousand separator
-                                .html(tooltipContent);
+                            // d3.select('#tooltip')
+                            //     .style('opacity', 1)
+                            //     .style('z-index', 1000000)
+                            //       // Format number with million and thousand separator
+                            //     .html(tooltipContent);
 
                           })
                         .on('mousemove', (event) => {
-                            //position the tooltip
-                            d3.select('#tooltip')
-                             .style('left', (event.pageX + 10) + 'px')   
-                              .style('top', (event.pageY + 10) + 'px');
+                          //old tooltip code
+                            // //position the tooltip
+                            // d3.select('#tooltip')
+                            //  .style('left', (event.pageX + 10) + 'px')   
+                            //   .style('top', (event.pageY + 10) + 'px');
                          })              
                         .on('mouseleave', function() { //function to add mouseover event
                             vis.clearDetailOnDemandContent();
@@ -105,7 +109,9 @@ class LeafletMap {
                               .attr("fill", "steelblue") //change the fill
                               .attr('r', 3) //change radius
 
-                            d3.select('#tooltip').style('opacity', 0);//turn off the tooltip
+                              
+                            //old tooltip code
+                            // d3.select('#tooltip').style('opacity', 0);//turn off the tooltip
 
                           })
                         .on('click', (event, d) => { //experimental feature I was trying- click on point and then fly to it
@@ -150,8 +156,9 @@ class LeafletMap {
       d3.select('.columnInner[style="background-color: cornflowerblue;"]')
         .html(`
           <div>City: ${data.city}</div>
-          <div>Described encounter length: ${data.described_encounter_length}</div>
-          <div>Description of encounter: ${data.description}</div>
+          <div><b>Described encounter length:</b> ${data.described_encounter_length}</div>
+          <div><b>Description of encounter:</b> ${data.description}</div>
+          <div><b>Shape:</b> ${data.shape}</div>
         `);
     }
   
