@@ -159,6 +159,7 @@ class LeafletMap {
       let formattedstring = data.dateobject ? data.dateobject.toLocaleString('en-US') : '';
       d3.select('.columnInner[style="background-color: cornflowerblue;"]')
         .html(`
+          <div><b>Detail On Demand</b></div>
           <div><b>Date of Encounter:</b> ${formattedstring}<div>
           <div><b>Unformatted date of encounter (for debugging):</b> ${data.datetime}</div>
           <div><b>Time of day:</b> ${data.timeofday}</div>
@@ -174,7 +175,7 @@ class LeafletMap {
     // Function to clear content from the Detail on Demand column
     clearDetailOnDemandContent() {
       d3.select('.columnInner[style="background-color: cornflowerblue;"]')
-        .html('');
+        .html('<div><b>Detail On Demand</b></div>');
     }
   
 
