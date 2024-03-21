@@ -43,6 +43,7 @@ d3.csv('data/ufoSample.csv')
     });
 
     // Initialize chart and then show it
+    // maybe need new properties for settings? Need to figure out how we want to handle setting change logic
     leafletMap = new LeafletMap({ parentElement: '#my-map'}, data);
 
 
