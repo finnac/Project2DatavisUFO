@@ -154,11 +154,14 @@ class LeafletMap {
   
 
     // Function to add content to the Detail on Demand column
+
     addDetailOnDemandContent(data) {
-      let formattedstring = data.dateobject ? data.dateobject.toLocaleString('en-US', {timeZone: 'UTC'}) : '';
+      let formattedstring = data.dateobject ? data.dateobject.toLocaleString('en-US') : '';
       d3.select('.columnInner[style="background-color: cornflowerblue;"]')
         .html(`
           <div><b>Date of Encounter:</b> ${formattedstring}<div>
+          <div><b>Unformatted date of encounter (for debugging):</b> ${data.datetime}</div>
+          <div><b>Time of day:</b> ${data.timeofday}</div>
           <div><b>Country:</b> ${data.country}</div>
           <div><b>City: </b>${data.city}</div>
           <div><b>Date Documented:</b> ${data.date_documented}</div>

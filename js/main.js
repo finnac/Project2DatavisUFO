@@ -25,16 +25,16 @@ d3.csv('data/ufoSample.csv')
       const hour = d.dateobject.getHours();
 
       // Determine time of day based on hour
-      //time of day options
-      // morning: Morning: 4:01am - 10am
+      // time of day options
+      // Morning: Morning: 4:01am - 10am
       // Afternoon: 10:01am - 4pm 
       // Evening: 4:01pm - 10pm
-      // night: 10:01pm - 4am
-      if (hour >= 4 && hour <= 10) {
+      // Night: 10:01pm - 4am
+      if (hour >= 4 && hour < 10) {
         d.timeofday = 'Morning';
-      } else if (hour > 10 && hour <= 16) {
+      } else if (hour >= 10 && hour < 16) {
         d.timeofday = 'Afternoon';
-      } else if (hour > 16 && hour <= 22) {
+      } else if (hour >= 16 && hour < 22) {
         d.timeofday = 'Evening';
       } else {
         d.timeofday = 'Night';
