@@ -54,3 +54,43 @@
   cursor: pointer;
   font-size: x-large;
 }
+
+/* CSS for the modal window */
+.modal {
+  display: none; /* Hide the modal by default */
+  position: fixed;
+  z-index: 9999; /* Set a high z-index value */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.4); /* Black with transparency */
+}
+
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  position: relative; /* Ensure relative positioning for child elements */
+}
+
+/* CSS for the close button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #000;
+  cursor: pointer;
+  z-index: 99999; /* Ensure the close button appears above modal content */
+}
+
+/* Change cursor style on hover */
+.close:hover {
+  color: #f00; /* Change color on hover */
+}
