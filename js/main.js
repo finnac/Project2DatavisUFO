@@ -67,24 +67,50 @@ d3.csv('data/ufoSample.csv')
   })
   .catch(error => console.error(error));
 
-    // Add an event listener to the settings button using D3
-    d3.select("#detailSettingsButton").on("click", function() {
-      // Show the modal when the button is clicked
-      document.getElementById("myModal").style.display = "block";
+// Add an event listener to the settings button using D3
+d3.select("#detailSettingsButton").on("click", function() {
+  // Show the modal when the button is clicked
+  document.getElementById("myModal").style.display = "block";
+
+  // Append dropdown and label to the modal
+  var modalContent = d3.select("#myModal .modal-content");
+
+  // Append label
+  modalContent.append("label")
+    .attr("for", "colorByDropdown")
+    .text("Color by:");
+
+  // Append dropdown
+  var dropdown = modalContent.append("select")
+    .attr("id", "colorByDropdown")
+    .on("change", function() {
+      // Get selected value when dropdown value changes
+      var selectedValue = d3.select(this).property("value");
+      // Handle the selected value as needed
+      console.log("Selected value:", selectedValue);
     });
 
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
+  // Add options to the dropdown
+  var options = ["Default", "Year", "Month", "Time of day", "UFO Shape"];
+  dropdown.selectAll("option")
+    .data(options)
+    .enter().append("option")
+    .attr("value", d => d)
+    .text(d => d);
+});
 
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-      document.getElementById("myModal").style.display = "none";
-    }
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
 
-    // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
-      var modal = document.getElementById("myModal");
-      if (event.target == modal) {
-          modal.style.display = "none";
-      }
-    }
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  document.getElementById("myModal").style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  var modal = document.getElementById("myModal");
+  if (event.target == modal) {
+      modal.style.display = "none";
+  }
+}
