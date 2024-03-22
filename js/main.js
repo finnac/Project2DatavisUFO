@@ -3,7 +3,7 @@
 
 
 
-d3.csv('data/ufoSample.csv')
+d3.csv('data/ufo_sightings.csv')
 .then(data => {
     console.log(data[0]);
     console.log(data.length);
@@ -12,8 +12,10 @@ d3.csv('data/ufoSample.csv')
       d.datetime = d.date_time
       //process datetime into javascript date object
       d.dateobject = new Date(d.date_time);
-      d.latitude = +d.latitude; //make sure these are not strings
-      d.longitude = +d.longitude; //make sure these are not strings
+      
+      // Check if latitude and longitude are null, if so, set them to 0
+      d.latitude = !isNaN(d.latitude) ? +d.latitude : 0; //make sure these are not strings
+      d.longitude = !isNaN(d.longitude) ? +d.longitude : 0; //make sure these are not strings
       d.city = d.city_area;
       d.country = d.country;
       d.described_encounter_length = d.described_encounter_length;
