@@ -61,9 +61,6 @@ d3.csv('data/ufoSample.csv')
     // night: 10:01pm - 4am
     // (End values inclusive)
 
-    // Initialize chart and then show it
-    leafletMap = new LeafletMap({ parentElement: '#my-map'}, data);
-
     timeline = new Timeline({
       'parentElement': '#timeline',
       'containerWidth': 750,
