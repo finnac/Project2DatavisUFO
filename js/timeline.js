@@ -4,7 +4,8 @@ class Timeline {
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 750,
             containerHeight: _config.containerHeight || 250,
-            margin: { top: 10, right: 50, left: 50, bottom: 40 }
+            margin: { top: 10, right: 50, left: 50, bottom: 40 },
+            tooltipPadding: _config.tooltipPadding || 15  
         }
     
         this.data = _data;
@@ -38,37 +39,42 @@ class Timeline {
         console.log(timeframe[0], timeframe[1]);
 
         // The x scale maps the day on which the sighting happened
-        /*
+
         vis.xScale = d3.scaleTime()
                         .domain(timeframe)
                         .range([0, vis.width]);
-                        */
 
-        vis.xScale = d3.scaleLinear()
-                        .domain([0, 500])
-                        .range([0, vis.width]);
+
+        // vis.xScale = d3.scaleLinear()
+        //                 .domain([0, 500])
+        //                 .range([0, vis.width]);
 
         //The y Scale maps the time of day
-        /*
-        vis.yScale = d3.scaleTime()
-                        .domain([(new Date('2000-01-01T00:00')).getMinutes(), (new Date('2000-01-01T23:59')).getMinutes()])
-                        .range([0, vis.height]);
-                        */
 
+        vis.yScale = d3.scaleLinear()
+                        .domain([(new Date('2000-01-01T00:00')).getHours(), (new Date('2000-01-01T23:59')).getHours()])
+                        .range([vis.height, 0]);
+        
+        vis.yAxis = d3.axisLeft(vis.yScale)
+                      .tickValues([0, 4, 8, 12, 16, 20, 23])
+                      .tickFormat((d) => {return (String(d) + ':00');});
+
+        /*
         vis.yScale = d3.scaleLinear()
                         .domain([0, 500])
                         .range([0, vis.height]);
+                        */
 
         //Draw the axes
         vis.xAxisGroup = vis.chart.append('g')
             .attr('class', 'axis x-axis')
-            //.attr("transform", "translate(0," + vis.height + ")") 
-            .call(d3.axisTop(vis.xScale));
+            .attr("transform", "translate(0," + vis.height + ")") 
+            .call(d3.axisBottom(vis.xScale));
             
 
         vis.yAxisGroup = vis.chart.append('g')
             .attr('class', 'axis y-axis')
-            .call(d3.axisLeft(vis.yScale));
+            .call(vis.yAxis);
             
 
         //Plot the data on the Chart
@@ -76,11 +82,39 @@ class Timeline {
             .data(vis.data)
             .join('circle')
                 .attr('fill', 'MidnightBlue')
-                //.attr('opacity', .75)
+                .attr('opacity', .75)
                 .attr('r', 3)
                 .attr('cx', (d) => {/*console.log('cx', vis.xScale(d.dateobject));*/ return vis.xScale(d.dateobject)})
-                .attr('cy', (d) => {/*console.log('cy', vis.xScale(d.dateobject.getMinutes()));*/ return vis.xScale(d.dateobject.getMinutes())});
+                .attr('cy', (d) => {/*console.log('cy', vis.xScale(d.dateobject.getHours()))*/; return vis.yScale(d.dateobject.getHours())});
 
+                
+        vis.circles
+        .on('mouseover', function(event,d) { //function to add mouseover event
+            d3.select(this).transition() //D3 selects the object we have moused over in order to perform operations on it
+              .duration('150') //how long we are transitioning between the two states (works like keyframes)
+              .attr("fill", "red") //change the fill
+              .attr('r', 4); //change radius
+
+              // Append content to the Detail on Demand column
+              vis.addDetailOnDemandContent(d);
+
+          })
+              .on('mouseleave', function() { //function to add mouseover event
+                vis.clearDetailOnDemandContent();
+
+                d3.select(this).transition() //D3 selects the object we have moused over in order to perform operations on it
+                  .duration('150') //how long we are transitioning between the two states (works like keyframes)
+                  .attr("fill", "MidnightBlue") //change the fill
+                  .attr('opacity', .75)
+                  .attr('r', 3) //change radius
+
+                  
+                //old tooltip code
+                // d3.select('#tooltip').style('opacity', 0);//turn off the tooltip
+
+              })
+
+    
     }
 
     updateVis(){
@@ -90,4 +124,25 @@ class Timeline {
     renderVis(){
 
     }
+
+        // Function to add content to the Detail on Demand column
+        addDetailOnDemandContent(data) {
+            let formattedstring = data.dateobject ? data.dateobject.toLocaleString('en-US', {timeZone: 'UTC'}) : '';
+            d3.select('.columnInner[style="background-color: cornflowerblue;"]')
+              .html(`
+                <div><b>Date of Encounter:</b> ${formattedstring}<div>
+                <div><b>Country:</b> ${data.country}</div>
+                <div><b>City: </b>${data.city}</div>
+                <div><b>Date Documented:</b> ${data.date_documented}</div>
+                <div><b>Described encounter length:</b> ${data.described_encounter_length}</div>
+                <div><b>Description of encounter:</b> ${data.description}</div>
+                <div><b>Shape:</b> ${data.shape}</div>
+              `);
+          }
+        
+          // Function to clear content from the Detail on Demand column
+          clearDetailOnDemandContent() {
+            d3.select('.columnInner[style="background-color: cornflowerblue;"]')
+              .html('');
+          }
 }

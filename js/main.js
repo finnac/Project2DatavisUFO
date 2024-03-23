@@ -66,7 +66,7 @@ d3.csv('data/ufoSample.csv')
 
     timeline = new Timeline({
       'parentElement': '#timeline',
-      'containerWidth': 500,
+      'containerWidth': 750,
       'containerHeight': 200
     }, data);
     
