@@ -8,7 +8,7 @@ d3.csv('data/ufoSample.csv')
     console.log(data[0]);
     console.log(data.length);
     data.forEach(d => {
-      console.log(d);
+      //console.log(d);
       d.datetime = d.date_time
       //process datetime into javascript date object
       d.dateobject = new Date(d.date_time);
@@ -61,9 +61,15 @@ d3.csv('data/ufoSample.csv')
     // night: 10:01pm - 4am
     // (End values inclusive)
 
+    // Initialize chart and then show it
+    leafletMap = new LeafletMap({ parentElement: '#my-map'}, data);
 
+    timeline = new Timeline({
+      'parentElement': '#timeline',
+      'containerWidth': 500,
+      'containerHeight': 200
+    }, data);
     
-
   })
   .catch(error => console.error(error));
 
