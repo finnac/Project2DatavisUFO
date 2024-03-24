@@ -1,5 +1,8 @@
 
 
+// Variable to store the selected value
+var selectedColorByValue = "Default"; // Initialize with default value
+
 
 
 
@@ -71,36 +74,35 @@ d3.csv('data/ufo_sightings.csv')
 
 // Add an event listener to the settings button using D3
 d3.select("#detailSettingsButton").on("click", function() {
-  // Show the modal when the button is clicked
-  document.getElementById("myModal").style.display = "block";
+    // Show the modal when the button is clicked
+    document.getElementById("myModal").style.display = "block";
 
-  // Append dropdown and label to the modal
-  var modalContent = d3.select("#myModal .modal-content");
+    // Clear old modal content
+    var modalContent = d3.select("#myModal .modal-content");
+    modalContent.html("");
 
-  // Append label
-  modalContent.append("label")
-    .attr("for", "colorByDropdown")
-    .text("Color by:");
+    // Append label
+    modalContent.append("label")
+      .attr("for", "colorByDropdown")
+      .text("Color by:");
 
-  // Append dropdown
-  var dropdown = modalContent.append("select")
-    .attr("id", "colorByDropdown")
-    .on("change", function() {
-      // Get selected value when dropdown value changes
-      var selectedValue = d3.select(this).property("value");
-      // Handle the selected value as needed
-      console.log("Selected value:", selectedValue);
-    });
+    // Append dropdown
+    var dropdown = modalContent.append("select")
+      .attr("id", "colorByDropdown")
+      .on("change", function() {
+        // Get selected value when dropdown value changes
+        selectedColorByValue = d3.select(this).property("value");
+        // Handle the selected value as needed
+        console.log("Selected value:", selectedColorByValue);
+        // Call the updateColorBy function with the selected value
+        leafletMap.updateColorBy(selectedColorByValue);
+      });
 
-  // Add options to the dropdown
-  var options = ["Default", "Year", "Month", "Time of day", "UFO Shape"];
-  dropdown.selectAll("option")
-    .data(options)
-    .enter().append("option")
-    .attr("value", d => d)
-    .text(d => d);
-});
+    // Update dropdown options
+    updateDropdownOptions();
+  });
 
+  
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
@@ -115,4 +117,22 @@ window.onclick = function(event) {
   if (event.target == modal) {
       modal.style.display = "none";
   }
+}
+
+// Function to update the dropdown options
+function updateDropdownOptions() {
+  // Clear existing dropdown options before adding new ones
+  var dropdown = d3.select("#colorByDropdown");
+  dropdown.selectAll("option").remove();
+
+  // Add options to the dropdown
+  var options = ["Default", "Year", "Month", "Time of day", "UFO Shape"];
+  dropdown.selectAll("option")
+    .data(options)
+    .enter().append("option")
+    .attr("value", d => d)
+    .text(d => d);
+
+  // Set the dropdown value to the previously selected value
+  dropdown.property("value", selectedColorByValue);
 }

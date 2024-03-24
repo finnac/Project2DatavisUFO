@@ -4,13 +4,13 @@ class LeafletMap {
    * Class constructor with basic configuration
    * @param {Object}
    * @param {Array}
-   */
+      */
   constructor(_config, _data) {
     this.config = {
       parentElement: _config.parentElement,
     }
     this.data = _data;
-    this.initVis();
+        this.initVis();
   }
   
   /**
@@ -177,8 +177,48 @@ class LeafletMap {
       d3.select('.columnInner[style="background-color: cornflowerblue;"]')
         .html('<div><b>Detail On Demand</b></div>');
     }
-  
 
+    //update dot color functions
+    updateColorBy(selectedAttribute) {
+      let vis = this;
+
+      // Update the color of the points based on the selected attribute
+      switch (selectedAttribute) {
+        case "Default":
+          // Reset to default color
+          vis.Dots.attr("fill", "steelblue");
+          break;
+        case "Year":
+           // Color by year
+          // Assuming each data point has a "dateobject" property containing a JavaScript Date object
+          // Extract the year from the dateobject
+          const colorScale = d3.scaleSequential(d3.interpolateRainbow)
+          .domain(d3.extent(vis.data, d => d.dateobject.getFullYear()));
+
+          // Apply colors based on the year extracted from the dateobject
+          vis.Dots.attr("fill", d => colorScale(d.dateobject.getFullYear()));
+          break;
+      
+        case "Month":
+          // Color by month
+          // Assuming each data point has a "dateobject" property containing a JavaScript Date object
+            const monthColorScale = d3.scaleSequential(d3.interpolateRainbow)
+            .domain([0, 11]); // Month ranges from 0 to 11 (January to December)
+
+          // Apply colors based on the month extracted from the dateobject
+          vis.Dots.attr("fill", d => monthColorScale(d.dateobject.getMonth()));
+          break;
+
+        case "Time of day":
+          break;
+
+        case "UFO Shape":
+          break;
+        default:
+          // Handle unknown option
+          console.log("Unknown option for color by:", selectedAttribute);
+      }
+    }
 
   renderVis() {
     let vis = this;
@@ -186,4 +226,6 @@ class LeafletMap {
     //not using right now... 
  
   }
+
+  
 }
