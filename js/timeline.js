@@ -4,7 +4,7 @@ class Timeline {
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 750,
             containerHeight: _config.containerHeight || 250,
-            margin: { top: 10, right: 10, left: 50, bottom: 40 },
+            margin: { top: 30, right: 10, left: 70, bottom: 40 },
             tooltipPadding: _config.tooltipPadding || 15  
         }
     
@@ -55,6 +55,29 @@ class Timeline {
             .attr('class', 'axis y-axis')
             .call(vis.yAxis);            
 
+        //Add Labels
+        vis.xAxisLabel = vis.chart.append('text')
+            .attr('class', 'x label')
+            .attr("text-anchor", "end")
+            .attr("x", vis.config.containerWidth/2 + vis.config.margin.left)
+            .attr("y", vis.config.containerHeight + vis.config.margin.top + 20)
+            .text("Year");
+
+        vis.yAxisLabel = vis.chart.append('text')
+            .attr("class", "y label")
+            .attr("text-anchor", "end")
+            .attr("y", -vis.config.margin.left + 20)
+            .attr("x", 10)
+            .attr("transform", "rotate(-90)")
+            .text("Time of Day (24hr time)");
+
+        vis.graphLabel = vis.chart.append('text')
+            .attr("class", "graph Label")
+            .attr("text-anchor", "end")
+            .attr("x", vis.config.containerWidth/2 + vis.config.margin.left)
+            .attr("y", 0)
+            .text("Year");
+
         //call updateVis() to finish rendering the timeline
         this.updateVis();    
     }
@@ -65,6 +88,9 @@ class Timeline {
         //delete the old axes
         vis.xAxisGroup.remove();
         vis.yAxisGroup.remove();
+        vis.xAxisLabel.remove();
+        vis.yAxisLabel.remove();
+        vis.graphLabel.remove();
 
 
         //Calculate the height and width of the visualizations, factoring margins              
@@ -84,11 +110,10 @@ class Timeline {
 
         //redefine the graph scales:
         vis.xScale.range([0, vis.width]);
-        vis.yScale.range([0, vis.height]);
+        vis.yScale.range([vis.height, 0]);
 
 
         //Redraw the Axes
-        //Draw the axes
         vis.xAxisGroup = vis.chart.append('g')
             .attr('class', 'axis x-axis')
             .attr("transform", "translate(0," + vis.height + ")") 
@@ -98,6 +123,29 @@ class Timeline {
             .attr('class', 'axis y-axis')
             .call(vis.yAxis);
 
+        
+        //Rewrite the labels
+        vis.xAxisLabel = vis.chart.append('text')
+            .attr('class', 'x label')
+            .attr("text-anchor", "end")
+            .attr("x", vis.width/2)
+            .attr("y", vis.height + vis.config.margin.top)
+            .text("Year");
+
+        vis.yAxisLabel = vis.chart.append('text')
+            .attr("class", "y label")
+            .attr("text-anchor", "end")
+            .attr("y", -50)
+            .attr("x", vis.height/2 - 45)
+            .attr("transform", "rotate(-90)")
+            .text("Time of Day (24hr time)");
+
+        vis.graphLabel = vis.chart.append('text')
+            .attr("class", "graph Label")
+            .attr("text-anchor", "end")
+            .attr("x", vis.width/2)
+            .attr("y", -5)
+            .text("Timeline");
 
         //Plot the data on the Chart
         vis.circles = vis.chart.selectAll('circle')
@@ -127,7 +175,7 @@ class Timeline {
                 d3.select(this).transition() //D3 selects the object we have moused over in order to perform operations on it
                   .duration('150') //how long we are transitioning between the two states (works like keyframes)
                   .attr("fill", "MidnightBlue") //change the fill
-                  .attr('opacity', 0.6)
+                  .attr('opacity', 0.5)
                   .attr('r', 3) //change radius
 
                   
