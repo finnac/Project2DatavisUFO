@@ -66,10 +66,14 @@ d3.csv('data/ufo_sightings.csv')
     // night: 10:01pm - 4am
     // (End values inclusive)
 
+    //get width and heigh:
+    timeline_height = document.getElementById("timeline_div").clientHeight;
+    timeline_width = document.getElementById("timeline_div").clientWidth;
+
     timeline = new Timeline({
       'parentElement': '#timeline',
-      'containerWidth': 750,
-      'containerHeight': 200
+      'containerWidth': timeline_width,
+      'containerHeight': timeline_height
     }, data);
     
   })
@@ -139,3 +143,20 @@ function updateDropdownOptions() {
   // Set the dropdown value to the previously selected value
   dropdown.property("value", selectedColorByValue);
 }
+
+
+//Add event listeners to resize the Timeline:
+addEventListener("resize", resizeTimeline);
+
+function resizeTimeline() {
+  console.log('resize event triggered');
+
+  //get the new height and width of the div
+  timeline.config.containerHeight = document.getElementById("timeline_div").clientHeight;
+  timeline.config.containerWidth = document.getElementById("timeline_div").clientWidth;
+  console.log(timeline.config.containerHeight, timeline.config.containerWidth);
+
+  //call the update function
+  timeline.updateVis();
+}
+
