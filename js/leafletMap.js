@@ -70,7 +70,7 @@ class LeafletMap {
                         .on('mouseover', function(event,d) { //function to add mouseover event
                             d3.select(this).transition() //D3 selects the object we have moused over in order to perform operations on it
                               .duration('150') //how long we are transitioning between the two states (works like keyframes)
-                              .attr("fill", "red") //change the fill
+                              // .attr("fill", "red") //change the fill
                               .attr('r', 4); //change radius
 
                               // Append content to the Detail on Demand column
@@ -107,7 +107,7 @@ class LeafletMap {
 
                             d3.select(this).transition() //D3 selects the object we have moused over in order to perform operations on it
                               .duration('150') //how long we are transitioning between the two states (works like keyframes)
-                              .attr("fill", "steelblue") //change the fill
+                              // .attr("fill", "steelblue") //change the fill
                               .attr('r', 3) //change radius
 
                               
@@ -211,9 +211,21 @@ class LeafletMap {
           break;
 
         case "Time of day":
+          // Color by time of day
+          const timeOfDayColorScale = d3.scaleOrdinal(d3.schemeCategory10)
+          .domain(["Morning", "Afternoon", "Evening", "Night"]); // Define your categories
+
+          // Assuming each data point has a "timeOfDay" property containing the time of day category
+          vis.Dots.attr("fill", d => timeOfDayColorScale(d.timeofday));
           break;
 
         case "UFO Shape":
+          // Color by UFO shape
+          const ufoShapeColorScale = d3.scaleOrdinal(d3.schemeCategory10)
+          .domain([...new Set(vis.data.map(d => d.shape))]); // Assuming data has a "shape" property
+
+          // Apply colors based on the UFO shape category
+          vis.Dots.attr("fill", d => ufoShapeColorScale(d.shape));
           break;
         default:
           // Handle unknown option
