@@ -59,7 +59,8 @@ class LeafletMap {
     vis.Dots = vis.svg.selectAll('circle')
                     .data(vis.data) 
                     .join('circle')
-                        .attr("fill", "steelblue") 
+                        .attr("fill", "steelblue")
+                        .attr("original-fill", "steelblue") // Store the original fill color as an attribute
                         .attr("stroke", "black")
                         //Leaflet has to take control of projecting points. Here we are feeding the latitude and longitude coordinates to
                         //leaflet so that it can project them on the coordinates of the view. Notice, we have to reverse lat and lon.
@@ -70,8 +71,9 @@ class LeafletMap {
                         .on('mouseover', function(event,d) { //function to add mouseover event
                             d3.select(this).transition() //D3 selects the object we have moused over in order to perform operations on it
                               .duration('150') //how long we are transitioning between the two states (works like keyframes)
-                              // .attr("fill", "red") //change the fill
-                              .attr('r', 4); //change radius
+                              .attr("fill", "red") //change the fill
+                              
+                              .attr('r', 3 + ((vis.theMap.getZoom() - 2) * 0.6) + 1); //change radius
 
                               // Append content to the Detail on Demand column
                               vis.clearDetailOnDemandContent();
@@ -107,8 +109,10 @@ class LeafletMap {
 
                             d3.select(this).transition() //D3 selects the object we have moused over in order to perform operations on it
                               .duration('150') //how long we are transitioning between the two states (works like keyframes)
-                              // .attr("fill", "steelblue") //change the fill
-                              .attr('r', 3) //change radius
+                              .attr("fill", function() {
+                                return d3.select(this).attr("original-fill"); // Get the original-fill attribute value
+                              })
+                              .attr('r', 3 + ((vis.theMap.getZoom() - 2) * 0.6)) //change radius
 
                               
                             //old tooltip code
@@ -133,10 +137,18 @@ class LeafletMap {
     let vis = this;
 
     //want to see how zoomed in you are? 
-    // console.log(vis.map.getZoom()); //how zoomed am I
+    console.log(vis.theMap.getZoom()); //how zoomed am I
     
     //want to control the size of the radius to be a certain number of meters? 
-    vis.radiusSize = 3; 
+     // Calculate the radius size based on the zoom level
+    // You can adjust this formula to be bigger or smaller as needed
+    vis.radiusSize = 3 + ((vis.theMap.getZoom() - 2) * 0.6);
+
+    // Redraw based on new zoom - need to recalculate on-screen position
+    vis.Dots
+      .attr("cx", d => vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).x)
+      .attr("cy", d => vis.theMap.latLngToLayerPoint([d.latitude, d.longitude]).y)
+      .attr("r", vis.radiusSize);
 
     // if( vis.theMap.getZoom > 15 ){
     //   metresPerPixel = 40075016.686 * Math.abs(Math.cos(map.getCenter().lat * Math.PI/180)) / Math.pow(2, map.getZoom()+8);
@@ -145,10 +157,7 @@ class LeafletMap {
     // }
    
    //redraw based on new zoom- need to recalculate on-screen position
-    vis.Dots
-      .attr("cx", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).x)
-      .attr("cy", d => vis.theMap.latLngToLayerPoint([d.latitude,d.longitude]).y)
-      .attr("r", vis.radiusSize) ;
+  
 
   }
 
@@ -182,57 +191,67 @@ class LeafletMap {
     //update dot color functions
     updateColorBy(selectedAttribute) {
       let vis = this;
-
+    
       // Update the color of the points based on the selected attribute
       switch (selectedAttribute) {
         case "Default":
           // Reset to default color
-          vis.Dots.attr("fill", "steelblue");
+          vis.Dots.attr("fill", "steelblue")
+            .attr("original-fill", "steelblue"); // Set original-fill attribute
           break;
         case "Year":
-           // Color by year
-          // Assuming each data point has a "dateobject" property containing a JavaScript Date object
-          // Extract the year from the dateobject
-          const colorScale = d3.scaleSequential(d3.interpolateRainbow)
-          .domain(d3.extent(vis.data, d => d.dateobject.getFullYear()));
-
+          // Color by year
+          const colorScaleYear = d3.scaleSequential(d3.interpolateRainbow)
+            .domain(d3.extent(vis.data, d => d.dateobject.getFullYear()));
+    
           // Apply colors based on the year extracted from the dateobject
-          vis.Dots.attr("fill", d => colorScale(d.dateobject.getFullYear()));
+          vis.Dots.attr("fill", function(d) {
+            const color = colorScaleYear(d.dateobject.getFullYear());
+            d3.select(this).attr("original-fill", color); // Update original-fill attribute
+            return color;
+          });
           break;
-      
         case "Month":
           // Color by month
-          // Assuming each data point has a "dateobject" property containing a JavaScript Date object
-            const monthColorScale = d3.scaleSequential(d3.interpolateRainbow)
+          const colorScaleMonth = d3.scaleSequential(d3.interpolateRainbow)
             .domain([0, 11]); // Month ranges from 0 to 11 (January to December)
-
+    
           // Apply colors based on the month extracted from the dateobject
-          vis.Dots.attr("fill", d => monthColorScale(d.dateobject.getMonth()));
+          vis.Dots.attr("fill", function(d) {
+            const color = colorScaleMonth(d.dateobject.getMonth());
+            d3.select(this).attr("original-fill", color); // Update original-fill attribute
+            return color;
+          });
           break;
-
         case "Time of day":
           // Color by time of day
           const timeOfDayColorScale = d3.scaleOrdinal(d3.schemeCategory10)
-          .domain(["Morning", "Afternoon", "Evening", "Night"]); // Define your categories
-
+            .domain(["Morning", "Afternoon", "Evening", "Night"]); // Define your categories
+    
           // Assuming each data point has a "timeOfDay" property containing the time of day category
-          vis.Dots.attr("fill", d => timeOfDayColorScale(d.timeofday));
+          vis.Dots.attr("fill", function(d) {
+            const color = timeOfDayColorScale(d.timeofday);
+            d3.select(this).attr("original-fill", color); // Update original-fill attribute
+            return color;
+          });
           break;
-
         case "UFO Shape":
           // Color by UFO shape
           const ufoShapeColorScale = d3.scaleOrdinal(d3.schemeCategory10)
-          .domain([...new Set(vis.data.map(d => d.shape))]); // Assuming data has a "shape" property
-
+            .domain([...new Set(vis.data.map(d => d.shape))]); // Assuming data has a "shape" property
+    
           // Apply colors based on the UFO shape category
-          vis.Dots.attr("fill", d => ufoShapeColorScale(d.shape));
+          vis.Dots.attr("fill", function(d) {
+            const color = ufoShapeColorScale(d.shape);
+            d3.select(this).attr("original-fill", color); // Update original-fill attribute
+            return color;
+          });
           break;
         default:
           // Handle unknown option
           console.log("Unknown option for color by:", selectedAttribute);
       }
     }
-
   renderVis() {
     let vis = this;
 
