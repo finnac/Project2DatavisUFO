@@ -166,11 +166,13 @@ class Timeline {
               .attr('r', 4); //change radius
 
               // Append content to the Detail on Demand column
+              vis.clearDetailOnDemandContent();
               vis.addDetailOnDemandContent(d);
+          
 
           })
               .on('mouseleave', function() { //function to add mouseover event
-                vis.clearDetailOnDemandContent();
+                // vis.clearDetailOnDemandContent();
 
                 d3.select(this).transition() //D3 selects the object we have moused over in order to perform operations on it
                   .duration('150') //how long we are transitioning between the two states (works like keyframes)
