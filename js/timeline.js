@@ -194,7 +194,7 @@ class Timeline {
     // Function to add content to the Detail on Demand column
     addDetailOnDemandContent(data) {
     let formattedstring = data.dateobject ? data.dateobject.toLocaleString('en-US', {timeZone: 'UTC'}) : '';
-        d3.select('.columnInner[style="background-color: cornflowerblue;"]')
+        d3.select('.detaildiv[style="background-color: darkseagreen;"]')
           .html(`
             <div><b>Date of Encounter:</b> ${formattedstring}<div>
             <div><b>Country:</b> ${data.country}</div>
@@ -208,7 +208,7 @@ class Timeline {
         
     // Function to clear content from the Detail on Demand column
     clearDetailOnDemandContent() {
-        d3.select('.columnInner[style="background-color: cornflowerblue;"]')
+        d3.select('.detaildiv[style="background-color: darkseagreen;"]')
             .html('');
     }
 }
