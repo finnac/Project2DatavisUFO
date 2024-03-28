@@ -19,20 +19,26 @@
   color: #888;
 }
 
-.column1 {
-  float: left;
-  width: 60vw;
+.mapdiv {
+  width: 60%;
 }
 
-.column2 {
-  float: left;
-  width: 37vw;
+.visdiv {
+  width: 40%;
 }
 
-.columnInner {
-  float: left;
-  width: 50%;
-  height: 50vh;
+.detaildiv {
+  width: 25%;
+}
+
+.timelinediv{
+  width: 75%;
+}
+
+.row{
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
 }
 
 #body {
