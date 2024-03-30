@@ -160,10 +160,10 @@ function updateDropdownOptions() {
 
 //Add event listeners to resize the Timeline and Bargraph:
 addEventListener("resize", resizeVisualizations);
-document.getElementById("month_button").addEventListener("click", updateCategory("month"));
-document.getElementById("hour_button").addEventListener("click",updateCategory("timeofday"));
-document.getElementById("shape_button").addEventListener("click",updateCategory("ufo_shape"));
-document.getElementById("len_button").addEventListener("click",updateCategory("encounter_length"));
+document.getElementById("month_button").addEventListener("click", onButtonClick("month"));
+document.getElementById("hour_button").addEventListener("click", onButtonClick("timeofday"));
+document.getElementById("shape_button").addEventListener("click", onButtonClick("ufo_shape"));
+document.getElementById("len_button").addEventListener("click", onButtonClick("encounter_length"));
 
 
 function resizeVisualizations() {
@@ -184,8 +184,8 @@ function resizeVisualizations() {
   bargraph.updateVis();
 }
 
-function updateCategory(){
-  console.log("categor changed to", new_category)
+function onButtonClick(new_category){
+  console.log("category changed to", new_category)
   bargraph.category = new_category;
   bargraph.updateVis();
 }

@@ -57,8 +57,6 @@ class Bargraph {
     }
 
     updateVis(){
-        console.log("update Bargraph");
-
         let vis = this;
 
         //delete the old axes

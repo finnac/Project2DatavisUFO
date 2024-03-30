@@ -97,8 +97,8 @@ class Timeline {
         vis.width = vis.config.containerWidth - vis.config.margin.left - vis.config.margin.right;
         vis.height = vis.config.containerHeight - vis.config.margin.top - vis.config.margin.bottom;
         
-        console.log('width', vis.width);
-        console.log('height', vis.height);
+        //console.log('width', vis.width);
+        //console.log('height', vis.height);
 
         //Redefine the SVG
                 
