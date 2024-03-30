@@ -2,7 +2,7 @@
 
 // Variable to store the selected value
 var selectedColorByValue = "Default"; // Initialize with default value
-
+let bargraph, timeline;
 
 
 
@@ -45,6 +45,9 @@ d3.csv('data/ufoSample.csv')
         d.timeofday = 'Night';
       }
 
+      //get the month in string form
+      d.month = d.dateobject.toLocaleString('en-US', {month: 'long'});
+
     });
 
     // Initialize chart and then show it
@@ -66,15 +69,25 @@ d3.csv('data/ufoSample.csv')
     // night: 10:01pm - 4am
     // (End values inclusive)
 
-    //get width and heigh:
+    //get Timeline width and height:
     timeline_height = document.getElementById("timeline_div").clientHeight;
     timeline_width = document.getElementById("timeline_div").clientWidth;
+
+    //get Bargraph width and height:
+    bargraph_height = document.getElementById("b_vis_div").clientHeight;
+    bargraph_width = document.getElementById("b_vis_div").clientWidth;
 
     timeline = new Timeline({
       'parentElement': '#timeline',
       'containerWidth': timeline_width,
       'containerHeight': timeline_height
     }, data);
+
+    bargraph = new Bargraph({
+      'parentElement': '#extra-vis',
+      'containerWidth': bargraph_width,
+      'containerHeight': bargraph_height - 50
+    }, data, "timeofday")
     
   })
   .catch(error => console.error(error));
@@ -145,18 +158,35 @@ function updateDropdownOptions() {
 }
 
 
-//Add event listeners to resize the Timeline:
-addEventListener("resize", resizeTimeline);
+//Add event listeners to resize the Timeline and Bargraph:
+addEventListener("resize", resizeVisualizations);
+document.getElementById("month_button").addEventListener("click", updateCategory("month"));
+document.getElementById("hour_button").addEventListener("click",updateCategory("timeofday"));
+document.getElementById("shape_button").addEventListener("click",updateCategory("ufo_shape"));
+document.getElementById("len_button").addEventListener("click",updateCategory("encounter_length"));
 
-function resizeTimeline() {
+
+function resizeVisualizations() {
   console.log('resize event triggered');
 
-  //get the new height and width of the div
+  //get the new height and width of the timeline div
   timeline.config.containerHeight = document.getElementById("timeline_div").clientHeight;
   timeline.config.containerWidth = document.getElementById("timeline_div").clientWidth;
-  console.log(timeline.config.containerHeight, timeline.config.containerWidth);
 
   //call the update function
   timeline.updateVis();
+  
+  //get the new height and width for the B goal div
+  bargraph.config.containerHeight = document.getElementById("b_vis_div").clientHeight - 50;
+  bargraph.config.containerWidth = document.getElementById("b_vis_div").clientWidth;
+
+  //call the update function
+  bargraph.updateVis();
+}
+
+function updateCategory(){
+  console.log("categor changed to", new_category)
+  bargraph.category = new_category;
+  bargraph.updateVis();
 }
 
