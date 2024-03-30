@@ -87,7 +87,7 @@ d3.csv('data/ufoSample.csv')
       'parentElement': '#extra-vis',
       'containerWidth': bargraph_width,
       'containerHeight': bargraph_height - 50
-    }, data, "timeofday")
+    }, data, "ufo_shape")
     
   })
   .catch(error => console.error(error));

@@ -84,8 +84,7 @@ class Bargraph {
         let values, counts, x;
 
         if(vis.category == "encounter_length"){
-            //if the category is encounter_length, then the divisions need to be calulated differently
-            
+            //if the category is encounter_length, then the divisions need to be calulated differently            
             x = this.generateLogBands();
         }
         else{
@@ -102,9 +101,10 @@ class Bargraph {
         else{
             values = x[0];
         }
+
         counts = x[1];
 
-        console.log("valus", values);
+        console.log("values", values);
         console.log("counts", counts);
 
         //Redefine the scales
@@ -112,6 +112,7 @@ class Bargraph {
             .domain(values)
             .range([3, vis.width])
             .padding(0.2); 
+
         
         let maxCount = Math.max(...Object.values(counts));
         console.log(maxCount);
@@ -128,6 +129,12 @@ class Bargraph {
         vis.yAxisGroup = vis.chart.append('g')
             .attr('class', 'axis y-axis')
             .call(d3.axisLeft(vis.yScale));
+
+        //Adjust for a great number of labels
+        if(["encounter_length", "ufo_shape", "month"].includes(vis.category)){
+            vis.xAxisGroup.selectAll("text")
+                            .attr('transform', 'rotate(25)');
+        }
 
         //Plot the data on the Chart
         //Draw the bars
@@ -173,22 +180,22 @@ class Bargraph {
         let counts = {};
 
         //create a log scale to use as a base for the calculated buckets
-        logScale = d3.scaleLog()
+        let logScale = d3.scaleLog()
                         .domain(d3.extent(this.data, d => d.encounter_length))
-                        .range(100);
+                        .range([0, 100]);
 
         //calculate the cap values for each bucket in the chart
         for(let i = 1; i <= 20; i++){
-            let val = logScale(i * 5);
-            values.push(val);
-            counts[val] = 0;
+            let val = logScale.invert(i * 5);
+            values.push(Number(val.toFixed(1)));
+            counts[Number(val.toFixed(1))] = 0;
         }
 
         //calculate the counts for each bucket
         this.data.forEach( (d) => {
             for(let i = 0; i <20; i++){
                 if(d.encounter_length <= values[i]){
-                    counts[i]++;
+                    counts[values[i]]++;
                     break;
                 }
             }
