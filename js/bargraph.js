@@ -4,7 +4,7 @@ class Bargraph {
             parentElement: _config.parentElement,
             containerWidth: _config.containerWidth || 750,
             containerHeight: _config.containerHeight || 250,
-            margin: { top: 30, right: 10, left: 70, bottom: 40 },
+            margin: { top: 30, right: 10, left: 70, bottom: 60 },
             tooltipPadding: _config.tooltipPadding || 15  
         }
     
@@ -93,7 +93,7 @@ class Bargraph {
         }
         
         if(vis.category =="month"){
-            values = ["January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            values = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         }
         else if (vis.category == "timeofday"){
             values = ["Morning", "Afternoon", "Evening", "Night"];
@@ -104,9 +104,6 @@ class Bargraph {
 
         counts = x[1];
 
-        console.log("values", values);
-        console.log("counts", counts);
-
         //Redefine the scales
         vis.xScale = d3.scaleBand()
             .domain(values)
@@ -115,7 +112,6 @@ class Bargraph {
 
         
         let maxCount = Math.max(...Object.values(counts));
-        console.log(maxCount);
         vis.yScale = d3.scaleLinear()
             .domain([0, maxCount])
             .range([vis.height, 0]);
@@ -123,7 +119,7 @@ class Bargraph {
         //Redraw the Axes
         vis.xAxisGroup = vis.chart.append('g')
             .attr('class', 'axis x-axis')
-            .attr("transform", "translate(0," + vis.height + ")") 
+            .attr("transform", "translate(0," + vis.height + ")")
             .call(d3.axisBottom(vis.xScale));
                 
         vis.yAxisGroup = vis.chart.append('g')
@@ -133,7 +129,7 @@ class Bargraph {
         //Adjust for a great number of labels
         if(["encounter_length", "ufo_shape", "month"].includes(vis.category)){
             vis.xAxisGroup.selectAll("text")
-                            .attr('transform', 'rotate(25)');
+                            .attr('transform', 'rotate(25)')
         }
 
         //Plot the data on the Chart
@@ -145,7 +141,7 @@ class Bargraph {
                 .attr('fill', 'MidnightBlue')
                 .attr('width', vis.xScale.bandwidth())
                 .attr('height', val => vis.height - vis.yScale(counts[val]))
-                .attr('y', val => {console.log(counts[val]); return vis.yScale(counts[val])})
+                .attr('y', val => vis.yScale(counts[val]))
                 .attr('x', val => vis.xScale(val));
         }
 
@@ -170,14 +166,14 @@ class Bargraph {
             }
         });
 
-        console.log(counts);
-
         return [values, counts];
     }
 
     generateLogBands(){
         let values = [];
         let counts = {};
+
+        console.log(d3.extent(this.data, d => d.encounter_length));
 
         //create a log scale to use as a base for the calculated buckets
         let logScale = d3.scaleLog()

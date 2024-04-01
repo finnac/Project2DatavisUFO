@@ -31,11 +31,11 @@
             <div id="my-map"></div>
         </div>
         <div class="visdiv" id="b_vis_div" style="background-color: goldenrod;">
-            <div style="display: flex; flex-direction: row;">
-                <button type="button" id="month_button" value="month">Time of Year</button>
-                <button type="button" id="hour_button" value="timeofday">Time of Day</button>
-                <button type="button" id="shape_button" value="ufo_shape"> UFO Shape</button>
-                <button type="button" id="len_button" value="encounter_length">Encounter Length</button>
+            <div style="display: flex; flex-direction: row; column-gap: 0.25vw; justify-content: center;">
+                <button type="button" id="hour_button" value="timeofday" class="selectButton">Time of Day</button>
+                <button type="button" id="month_button" value="month" class="selectButton">Time of Year</button>
+                <button type="button" id="shape_button" value="ufo_shape" class="selectButton"> UFO Shape</button>
+                <button type="button" id="len_button" value="encounter_length" class="selectButton">Encounter Length</button>
             </div>
             <div id="b_vis_div" style="height: 70%;">
                 <svg id="extra-vis"></svg>

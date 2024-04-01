@@ -6,7 +6,7 @@ let bargraph, timeline;
 
 
 
-d3.csv('data/ufoSample.csv')
+d3.csv('data/ufo_sightings.csv')
 .then(data => {
     console.log(data[0]);
     console.log(data.length);
@@ -24,7 +24,8 @@ d3.csv('data/ufoSample.csv')
       d.described_encounter_length = d.described_encounter_length;
       d.description = d.description;
       d.shape = d.ufo_shape;
-      d.datedocumented = d.date_documented
+      d.datedocumented = d.date_documented;
+      d.encounter_length = +d.encounter_length;
       
       //calculate and assign time of day to datapoint
       const hour = d.dateobject.getHours();
@@ -87,7 +88,7 @@ d3.csv('data/ufoSample.csv')
       'parentElement': '#extra-vis',
       'containerWidth': bargraph_width,
       'containerHeight': bargraph_height - 50
-    }, data, "ufo_shape")
+    }, data, "timeofday")
     
   })
   .catch(error => console.error(error));
@@ -160,11 +161,36 @@ function updateDropdownOptions() {
 
 //Add event listeners to resize the Timeline and Bargraph:
 addEventListener("resize", resizeVisualizations);
+/*
 document.getElementById("month_button").addEventListener("click", onButtonClick("month"));
 document.getElementById("hour_button").addEventListener("click", onButtonClick("timeofday"));
 document.getElementById("shape_button").addEventListener("click", onButtonClick("ufo_shape"));
 document.getElementById("len_button").addEventListener("click", onButtonClick("encounter_length"));
+*/
 
+document.getElementById("month_button").onclick = () => {
+  console.log("month button pressed");
+  bargraph.category = "month";
+  bargraph.updateVis();
+}
+
+document.getElementById("hour_button").onclick = () => {
+  console.log("hour button pressed");
+  bargraph.category = "timeofday";
+  bargraph.updateVis();
+}
+
+document.getElementById("shape_button").onclick = () => {
+  console.log("shape button pressed");
+  bargraph.category = "ufo_shape";
+  bargraph.updateVis();
+}
+
+document.getElementById("len_button").onclick = () => {
+  console.log("encounter length button pressed");
+  bargraph.category = "encounter_length";
+  bargraph.updateVis();
+}
 
 function resizeVisualizations() {
   console.log('resize event triggered');
@@ -186,7 +212,12 @@ function resizeVisualizations() {
 
 function onButtonClick(new_category){
   console.log("category changed to", new_category)
-  bargraph.category = new_category;
-  bargraph.updateVis();
+  if(bargraph){
+    bargraph.category = new_category;
+    bargraph.updateVis();
+  }
+  else{
+    console.log("CHECKPOINT");
+  }
 }
 

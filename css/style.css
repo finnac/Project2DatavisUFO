@@ -49,6 +49,12 @@
   font-size: large;
 }
 
+.selectButton{
+  font-size: large;
+  margin-top: 1vh;
+  padding: 0.5vh 0.5vw;
+}
+
 /* settings button css stuff */
 .settings-button {
   position: absolute;
