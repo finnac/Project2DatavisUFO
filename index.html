@@ -30,9 +30,16 @@
         <div class="mapdiv">
             <div id="my-map"></div>
         </div>
-        <div class="visdiv" style="background-color: goldenrod;">
-            <div id="extra-vis"></div>
-            <div class="caption"><b>B goal vis</b></div>
+        <div class="visdiv" id="b_vis_div" style="background-color: goldenrod;">
+            <div style="display: flex; flex-direction: row; column-gap: 0.25vw; justify-content: center;">
+                <button type="button" id="hour_button" value="timeofday" class="selectButton">Time of Day</button>
+                <button type="button" id="month_button" value="month" class="selectButton">Time of Year</button>
+                <button type="button" id="shape_button" value="ufo_shape" class="selectButton"> UFO Shape</button>
+                <button type="button" id="len_button" value="encounter_length" class="selectButton">Encounter Length</button>
+            </div>
+            <div id="b_vis_div" style="height: 70%;">
+                <svg id="extra-vis"></svg>
+            </div>
         </div>
     </div>
 
@@ -57,6 +64,7 @@
     <script src="js/main.js"></script>
     <script src="js/leafletMap.js"></script>
     <script src="js/timeline.js"></script>
+    <script src="js/bargraph.js"></script>
 
 </body>
 </html>

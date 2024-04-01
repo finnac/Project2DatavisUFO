@@ -21,10 +21,12 @@
 
 .mapdiv {
   width: 60%;
+  height: 70vh;
 }
 
 .visdiv {
   width: 40%;
+  height: 70vh;
 }
 
 .detaildiv {
@@ -38,7 +40,6 @@
 .row{
   display: flex;
   flex-direction: row;
-  align-items: stretch;
 }
 
 #body {
@@ -46,6 +47,12 @@
   margin-left: 10%;
   margin-top: 2.5%;
   font-size: large;
+}
+
+.selectButton{
+  font-size: large;
+  margin-top: 1vh;
+  padding: 0.5vh 0.5vw;
 }
 
 /* settings button css stuff */

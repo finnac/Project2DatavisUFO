@@ -2,11 +2,11 @@
 
 // Variable to store the selected value
 var selectedColorByValue = "Default"; // Initialize with default value
+let bargraph, timeline;
 
 
 
-
-d3.csv('data/ufoSample.csv')
+d3.csv('data/ufo_sightings.csv')
 .then(data => {
     console.log(data[0]);
     console.log(data.length);
@@ -24,7 +24,8 @@ d3.csv('data/ufoSample.csv')
       d.described_encounter_length = d.described_encounter_length;
       d.description = d.description;
       d.shape = d.ufo_shape;
-      d.datedocumented = d.date_documented
+      d.datedocumented = d.date_documented;
+      d.encounter_length = +d.encounter_length;
       
       //calculate and assign time of day to datapoint
       const hour = d.dateobject.getHours();
@@ -44,6 +45,9 @@ d3.csv('data/ufoSample.csv')
       } else {
         d.timeofday = 'Night';
       }
+
+      //get the month in string form
+      d.month = d.dateobject.toLocaleString('en-US', {month: 'long'});
 
     });
 
@@ -66,15 +70,25 @@ d3.csv('data/ufoSample.csv')
     // night: 10:01pm - 4am
     // (End values inclusive)
 
-    //get width and heigh:
+    //get Timeline width and height:
     timeline_height = document.getElementById("timeline_div").clientHeight;
     timeline_width = document.getElementById("timeline_div").clientWidth;
+
+    //get Bargraph width and height:
+    bargraph_height = document.getElementById("b_vis_div").clientHeight;
+    bargraph_width = document.getElementById("b_vis_div").clientWidth;
 
     timeline = new Timeline({
       'parentElement': '#timeline',
       'containerWidth': timeline_width,
       'containerHeight': timeline_height
     }, data);
+
+    bargraph = new Bargraph({
+      'parentElement': '#extra-vis',
+      'containerWidth': bargraph_width,
+      'containerHeight': bargraph_height - 50
+    }, data, "timeofday")
     
   })
   .catch(error => console.error(error));
@@ -145,18 +159,65 @@ function updateDropdownOptions() {
 }
 
 
-//Add event listeners to resize the Timeline:
-addEventListener("resize", resizeTimeline);
+//Add event listeners to resize the Timeline and Bargraph:
+addEventListener("resize", resizeVisualizations);
+/*
+document.getElementById("month_button").addEventListener("click", onButtonClick("month"));
+document.getElementById("hour_button").addEventListener("click", onButtonClick("timeofday"));
+document.getElementById("shape_button").addEventListener("click", onButtonClick("ufo_shape"));
+document.getElementById("len_button").addEventListener("click", onButtonClick("encounter_length"));
+*/
 
-function resizeTimeline() {
+document.getElementById("month_button").onclick = () => {
+  console.log("month button pressed");
+  bargraph.category = "month";
+  bargraph.updateVis();
+}
+
+document.getElementById("hour_button").onclick = () => {
+  console.log("hour button pressed");
+  bargraph.category = "timeofday";
+  bargraph.updateVis();
+}
+
+document.getElementById("shape_button").onclick = () => {
+  console.log("shape button pressed");
+  bargraph.category = "ufo_shape";
+  bargraph.updateVis();
+}
+
+document.getElementById("len_button").onclick = () => {
+  console.log("encounter length button pressed");
+  bargraph.category = "encounter_length";
+  bargraph.updateVis();
+}
+
+function resizeVisualizations() {
   console.log('resize event triggered');
 
-  //get the new height and width of the div
+  //get the new height and width of the timeline div
   timeline.config.containerHeight = document.getElementById("timeline_div").clientHeight;
   timeline.config.containerWidth = document.getElementById("timeline_div").clientWidth;
-  console.log(timeline.config.containerHeight, timeline.config.containerWidth);
 
   //call the update function
   timeline.updateVis();
+  
+  //get the new height and width for the B goal div
+  bargraph.config.containerHeight = document.getElementById("b_vis_div").clientHeight - 50;
+  bargraph.config.containerWidth = document.getElementById("b_vis_div").clientWidth;
+
+  //call the update function
+  bargraph.updateVis();
+}
+
+function onButtonClick(new_category){
+  console.log("category changed to", new_category)
+  if(bargraph){
+    bargraph.category = new_category;
+    bargraph.updateVis();
+  }
+  else{
+    console.log("CHECKPOINT");
+  }
 }
 
