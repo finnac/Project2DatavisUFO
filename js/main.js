@@ -100,12 +100,14 @@ d3.select("#detailSettingsButton").on("click", function() {
 
     // Clear old modal content
     var modalContent = d3.select("#myModal .modal-content");
-    modalContent.html("");
+    
+    // Remove existing dropdown and label, if any
+    modalContent.selectAll("#colorByDropdown, label[for='colorByDropdown']").remove();
 
     // Append label
     modalContent.append("label")
       .attr("for", "colorByDropdown")
-      .text("Color by:");
+      .text("Color by: ");
 
     // Append dropdown
     var dropdown = modalContent.append("select")
