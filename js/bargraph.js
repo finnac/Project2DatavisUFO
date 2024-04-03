@@ -50,7 +50,23 @@ class Bargraph {
             
         vis.yAxisGroup = vis.chart.append('g')
             .attr('class', 'axis y-axis')
-            .call(d3.axisLeft(vis.xScale));    
+            .call(d3.axisLeft(vis.xScale)); 
+            
+        //label the axes
+        vis.yAxisLabel = vis.chart.append('text')
+            .attr("class", "y label")
+            .attr("text-anchor", "end")
+            .attr("y", -45)
+            .attr("x", -1 * (vis.config.containerHeight / 4))
+            .attr("transform", "rotate(-90)")
+            .text("count");
+
+        vis.xAxisLabel = vis.chart.append('text')
+            .attr('class', 'x label')
+            .attr("text-anchor", "end")
+            .attr("x", vis.width/2)
+            .attr("y", vis.height + vis.config.margin.top)
+            .text("x");
 
         //call updateVis() to finish rendering the timeline
         vis.updateVis();    
@@ -62,6 +78,7 @@ class Bargraph {
         //delete the old axes
         vis.xAxisGroup.remove();
         vis.yAxisGroup.remove();
+        vis.xAxisLabel.remove()
 
 
         //Calculate the height and width of the visualizations, factoring margins              
@@ -130,6 +147,16 @@ class Bargraph {
         if(["encounter_length", "ufo_shape", "month"].includes(vis.category)){
             vis.xAxisGroup.selectAll("text")
                             .attr('transform', 'rotate(25)')
+        }
+
+        //If the category is encounter length, add an x-axis label
+        if(vis.category == "encounter_length"){
+            vis.xAxisLabel = vis.chart.append('text')
+                .attr('class', 'x label')
+                .attr("text-anchor", "end")
+                .attr("x", vis.width/2 + vis.config.margin.left)
+                .attr("y", vis.height + vis.config.margin.bottom - 10)
+                .text("Encounter Length (in seconds)");
         }
 
         //Plot the data on the Chart

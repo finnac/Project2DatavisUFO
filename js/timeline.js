@@ -136,7 +136,7 @@ class Timeline {
             .attr("class", "y label")
             .attr("text-anchor", "end")
             .attr("y", -50)
-            .attr("x", vis.height/2 - 45)
+            .attr("x", vis.height/5 -vis.config.margin.top)
             .attr("transform", "rotate(-90)")
             .text("Time of Day (24hr time)");
 
@@ -193,9 +193,10 @@ class Timeline {
 
     // Function to add content to the Detail on Demand column
     addDetailOnDemandContent(data) {
-    let formattedstring = data.dateobject ? data.dateobject.toLocaleString('en-US', {timeZone: 'UTC'}) : '';
-        d3.select('.detaildiv[style="background-color: darkseagreen;"]')
+    let formattedstring = data.dateobject ? data.dateobject.toLocaleString('en-US') : '';
+        d3.select('.detaildiv[style="background-color: #e2e2ed;"]')
           .html(`
+            <div><b><u>Detail On Demand</u></b></div>
             <div><b>Date of Encounter:</b> ${formattedstring}<div>
             <div><b>Country:</b> ${data.country}</div>
             <div><b>City: </b>${data.city}</div>
@@ -208,7 +209,7 @@ class Timeline {
         
     // Function to clear content from the Detail on Demand column
     clearDetailOnDemandContent() {
-        d3.select('.detaildiv[style="background-color: darkseagreen;"]')
-            .html('');
+        d3.select('.detaildiv[style="background-color: #e2e2ed;"]')
+            .html('<div><b><u>Detail On Demand</u></b></div>');
     }
 }

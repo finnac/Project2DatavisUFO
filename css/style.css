@@ -49,6 +49,19 @@
   font-size: large;
 }
 
+a:link{
+  color: rgb(0, 195, 205);
+}
+a:visited{
+  color: darkcyan;
+}
+a:hover{
+  color:chartreuse;
+}
+a:active{
+  color:darkturquoise;
+}
+
 .selectButton{
   font-size: large;
   margin-top: 1vh;
