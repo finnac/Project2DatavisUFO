@@ -143,7 +143,7 @@ class Timeline {
             .attr("class", "y label")
             .attr("text-anchor", "end")
             .attr("y", -50)
-            .attr("x", vis.height/2 - 45)
+            .attr("x", vis.height/3.5 - 45)
             .attr("transform", "rotate(-90)")
             .text("Time of Day (24hr time)");
 
