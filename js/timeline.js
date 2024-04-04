@@ -17,6 +17,9 @@ class Timeline {
         console.log('Draw Timeline');
 
         let vis = this;
+
+        const brush = d3.brush()
+            .extent([[vis.config.margin.left, vis.config.margin.top - 5],[vis.config.containerWidth - vis.config.margin.right, vis.config.containerHeight - vis.config.margin.bottom + 5]])
         
         // Define 'svg' as a child-element (g) from the drawing area and include spaces
         // Add <svg> element (drawing space)
@@ -79,11 +82,13 @@ class Timeline {
             .text("Year");
 
         //call updateVis() to finish rendering the timeline
-        this.updateVis();    
+        this.updateVis(brush);
     }
 
-    updateVis(){
+    updateVis(brush){
         let vis = this;
+
+        brush.on("start brush end", ({selection}) => brushed(selection));
 
         //delete the old axes
         vis.xAxisGroup.remove();
@@ -136,7 +141,7 @@ class Timeline {
             .attr("class", "y label")
             .attr("text-anchor", "end")
             .attr("y", -50)
-            .attr("x", vis.height/5 -vis.config.margin.top)
+            .attr("x", vis.height/2 - 45)
             .attr("transform", "rotate(-90)")
             .text("Time of Day (24hr time)");
 
@@ -185,7 +190,35 @@ class Timeline {
                 // d3.select('#tooltip').style('opacity', 0);//turn off the tooltip
 
               })
+            
+
+        function contains([[x0, y0], [x1, y1]], d) {
+            let x = vis.xScale(d.dateobject) + 70;
+            let y = vis.yScale(d.dateobject.getHours()) + 30;
+
+            if( x >= x0 && x < x1 && y >= y0 && y < y1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
+
+        function brushed(selection)
+        {
+            if(selection != null)
+            {
+                vis.circles.attr("fill", selection && (d => contains(selection, d) ? "red" : null));
+            }
+        }
+
+        const gb = vis.svg.append("g")
+            .call(brush)
+            .call(brush.move);
+        }
+        
 
     renderVis(){
 
@@ -193,10 +226,9 @@ class Timeline {
 
     // Function to add content to the Detail on Demand column
     addDetailOnDemandContent(data) {
-    let formattedstring = data.dateobject ? data.dateobject.toLocaleString('en-US') : '';
-        d3.select('.detaildiv[style="background-color: #e2e2ed;"]')
+    let formattedstring = data.dateobject ? data.dateobject.toLocaleString('en-US', {timeZone: 'UTC'}) : '';
+        d3.select('.detaildiv[style="background-color: darkseagreen;"]')
           .html(`
-            <div><b><u>Detail On Demand</u></b></div>
             <div><b>Date of Encounter:</b> ${formattedstring}<div>
             <div><b>Country:</b> ${data.country}</div>
             <div><b>City: </b>${data.city}</div>
@@ -209,7 +241,7 @@ class Timeline {
         
     // Function to clear content from the Detail on Demand column
     clearDetailOnDemandContent() {
-        d3.select('.detaildiv[style="background-color: #e2e2ed;"]')
-            .html('<div><b><u>Detail On Demand</u></b></div>');
+        d3.select('.detaildiv[style="background-color: darkseagreen;"]')
+            .html('');
     }
 }
