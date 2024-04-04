@@ -18,7 +18,7 @@ class Timeline {
 
         let vis = this;
 
-        const brush = d3.brush()
+        vis.brush = d3.brush()
             .extent([[vis.config.margin.left, vis.config.margin.top - 5],[vis.config.containerWidth - vis.config.margin.right, vis.config.containerHeight - vis.config.margin.bottom + 5]])
         
         // Define 'svg' as a child-element (g) from the drawing area and include spaces
@@ -82,13 +82,15 @@ class Timeline {
             .text("Year");
 
         //call updateVis() to finish rendering the timeline
-        this.updateVis(brush);
+        this.updateVis(vis.brush);
     }
 
-    updateVis(brush){
+    updateVis(){
         let vis = this;
 
-        brush.on("start brush end", ({selection}) => brushed(selection));
+        vis.brush.extent([[vis.config.margin.left, vis.config.margin.top - 5],[vis.config.containerWidth - vis.config.margin.right, vis.config.containerHeight - vis.config.margin.bottom + 5]])
+
+        vis.brush.on("start brush end", ({selection}) => brushed(selection));
 
         //delete the old axes
         vis.xAxisGroup.remove();
@@ -215,8 +217,8 @@ class Timeline {
         }
 
         const gb = vis.svg.append("g")
-            .call(brush)
-            .call(brush.move);
+            .call(vis.brush)
+            .call(vis.brush.move);
         }
         
 
